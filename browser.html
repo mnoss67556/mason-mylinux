@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>myLinux Browser</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #202124;
+            color: white;
+        }
+
+        .toolbar {
+            height: 60px;
+            background: #292a2d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+        }
+
+        button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #3c4043;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5f6368;
+        }
+
+        #address {
+            flex: 1;
+            height: 40px;
+            border: none;
+            border-radius: 20px;
+            padding: 0 18px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #page {
+            width: 100%;
+            height: calc(100vh - 60px);
+            border: none;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="toolbar">
+
+        <button onclick="goBack()">←</button>
+        <button onclick="goForward()">→</button>
+        <button onclick="reload()">↻</button>
+
+        <input
+            id="address"
+            placeholder="Search or enter a website"
+            onkeydown="handleEnter(event)"
+        >
+
+    </div>
+
+    <iframe id="page" src="https://www.google.com"></iframe>
+
+    <script>
+
+        const page = document.getElementById("page");
+        const address = document.getElementById("address");
+
+        function goBack() {
+            page.contentWindow.history.back();
+        }
+
+        function goForward() {
+            page.contentWindow.history.forward();
+        }
+
+        function reload() {
+            page.contentWindow.location.reload();
+        }
+
+        function handleEnter(event) {
+
+            if (event.key !== "Enter") {
+                return;
+            }
+
+            let input = address.value.trim();
+
+            if (!input) {
+                return;
+            }
+
+            if (!input.startsWith("http://") &&
+                !input.startsWith("https://")) {
+
+                input = "https://www.google.com/search?q=" +
+                        encodeURIComponent(input);
+            }
+
+            page.src = input;
+        }
+
+    </script>
+
+</body>
+</html>
